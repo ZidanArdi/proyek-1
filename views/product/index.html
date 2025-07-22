@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List Products</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="#">Daftar Produk</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/products">Products</a></li>
+                <li class="nav-item"><a class="nav-link" href="/categories">Categories</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
+        <h2 class="mb-0">List Products</h2>
+        <a href="/products/add" class="btn btn-primary">Add Product</a>
+    </div>
+
+    {{ if eq .deleted "true" }}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        Produk berhasil dihapus.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {{ end }}
+
+    <!-- Desktop Table -->
+    <div class="table-responsive d-none d-md-block">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Stock</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                    <th style="min-width: 180px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .products }}
+                <tr>
+                    <td>{{ .Name }}</td>
+                    <td>{{ .CategoryName }}</td>
+                    <td>{{ .Stock }}</td>
+                    <td>{{ .Description }}</td>
+                    <td class="text-center">
+                        {{ if .GambarURL }}
+                            <img src="{{ .GambarURL }}" alt="{{ .Name }}" style="width: 50px; height: 50px;" class="img-thumbnail">
+                        {{ else }}
+                            <span class="text-muted">No Image</span>
+                        {{ end }}
+                    </td>
+                    <td>{{ .Harga }}</td>
+                    <td class="text-center">
+                        <a href="/products/detail?id={{ .ID.Hex }}" class="btn btn-sm btn-info me-1 mb-1">Detail</a>
+                        <a href="/products/edit?id={{ .ID.Hex }}" class="btn btn-sm btn-warning me-1 mb-1">Edit</a>
+                        <button class="btn btn-sm btn-danger mb-1 btn-delete" data-id="{{ .ID.Hex }}" data-name="{{ .Name }}">Hapus</button>
+                    </td>
+                </tr>
+                {{ else }}
+                <tr>
+                    <td colspan="7" class="text-center">No products found.</td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mobile Cards -->
+    <div class="d-block d-md-none">
+        <div class="row row-cols-1 g-3">
+            {{ range .products }}
+            <div class="col">
+                <div class="card shadow-sm">
+                    {{ if .GambarURL }}
+                        <img src="{{ .GambarURL }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="{{ .Name }}">
+                    {{ end }}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ .Name }}</h5>
+                        <p class="card-text mb-1"><strong>Category:</strong> {{ .CategoryName }}</p>
+                        <p class="card-text mb-1"><strong>Stock:</strong> {{ .Stock }}</p>
+                        <p class="card-text mb-1"><strong>Price:</strong> {{ .Harga }}</p>
+                        <p class="card-text"><strong>Description:</strong> {{ .Description }}</p>
+                        <div class="mt-2 d-flex flex-wrap gap-2">
+                            <a href="/products/detail?id={{ .ID.Hex }}" class="btn btn-sm btn-info">Detail</a>
+                            <a href="/products/edit?id={{ .ID.Hex }}" class="btn btn-sm btn-warning">Edit</a>
+                            <button class="btn btn-sm btn-danger btn-delete" data-id="{{ .ID.Hex }}" data-name="{{ .Name }}">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ else }}
+            <div class="col">
+                <div class="alert alert-info text-center">No products found.</div>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+
+</div>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const deleted = urlParams.get('deleted');
+    if (deleted === 'success') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Produk berhasil dihapus!',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    }
+
+    document.querySelectorAll('.btn-delete').forEach(button => {
+        button.addEventListener('click', function () {
+            const productId = this.getAttribute('data-id');
+            const productName = this.getAttribute('data-name');
+
+            Swal.fire({
+                title: `Hapus produk "${productName}"?`,
+                text: "Data yang dihapus tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/products/delete?id=${productId}`;
+                }
+            });
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

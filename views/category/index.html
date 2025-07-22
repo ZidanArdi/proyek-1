@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List Categories</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @media (max-width: 576px) {
+            .table-responsive {
+                overflow-x: auto;
+            }
+            .btn-sm {
+                margin-bottom: 5px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Tambah Kategori</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/products">Products</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/categories">Categories</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3">
+        <h2 class="mb-2 mb-sm-0">List Categories</h2>
+        <a href="/categories/add" class="btn btn-primary">Add Category</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th style="width: 180px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .categories }}
+                <tr>
+                    <td>{{ .Name }}</td>
+                    <td>
+                        <a href="/categories/edit?id={{.ID.Hex}}" class="btn btn-warning btn-sm me-1">Edit</a>
+                        <button class="btn btn-danger btn-sm" onclick="confirmDelete('{{.ID.Hex}}')">Delete</button>
+                    </td>
+                </tr>
+                {{ else }}
+                <tr>
+                    <td colspan="2" class="text-center">No categories found.</td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // Konfirmasi sebelum hapus
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Yakin ingin menghapus?',
+            text: "Data kategori akan dihapus secara permanen!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/categories/delete?id=' + id;
+            }
+        });
+    }
+
+    // Tampilkan notifikasi sukses jika berhasil dihapus
+    const urlParams = new URLSearchParams(window.location.search);
+    const deleted = urlParams.get('deleted');
+    if (deleted === 'success') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Kategori berhasil dihapus!',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
