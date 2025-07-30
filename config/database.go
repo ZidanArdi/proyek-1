@@ -1,52 +1,34 @@
 package config
 
 import (
-	"context"
-	"log"
-	"time"
+    "context"
+    "log"
+    "time"
 
-	"os"
-
-	"github.com/joho/godotenv"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+    "go.mongodb.org/mongo-driver/mongo"
+    "go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var MongoClient *mongo.Client
 var MongoDatabase *mongo.Database
 
 func Connection() {
-	// Load .env file
-	errEnv := godotenv.Load()
-	if errEnv != nil {
-		log.Println("Warning: .env file not found, relying on environment variables")
-	}
+    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    defer cancel()
 
-	mongoURI := os.Getenv("MONGODB_URI")
-	if mongoURI == "" {
-		log.Fatal("MONGODB_URI not set in environment")
-	}
-	dbName := os.Getenv("MONGODB_DATABASE")
-	if dbName == "" {
-		log.Fatal("MONGODB_DATABASE not set in environment")
-	}
+    clientOptions := options.Client().ApplyURI("mongodb+srv://ZidanArdi:zidan123@cluster0.hw26aku.mongodb.net/")
+    client, err := mongo.Connect(ctx, clientOptions)
+    if err != nil {
+        log.Fatal(err)
+    }
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+    // Ping untuk memastikan koneksi berhasil
+    err = client.Ping(ctx, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
 
-	clientOptions := options.Client().ApplyURI(mongoURI)
-	client, err := mongo.Connect(ctx, clientOptions)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Ping untuk memastikan koneksi berhasil
-	err = client.Ping(ctx, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println("Connected to MongoDB")
-	MongoClient = client
-	MongoDatabase = client.Database(dbName)
+    log.Println("Connected to MongoDB")
+    MongoClient = client
+    MongoDatabase = client.Database("sateayammadura")
 }
