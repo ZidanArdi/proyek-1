@@ -1,0 +1,269 @@
+html, body {
+  overflow-x: hidden;
+  box-sizing: border-box;
+  width: 100vw;
+  max-width: 100vw;
+}
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+img, .carousel-inner img, .card-img-top {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+body {
+  font-family: 'Montserrat', Arial, sans-serif;
+  background: #f8f9fa;
+}
+.navbar-nav .nav-link {
+  color: white !important;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 5px 12px;
+  margin-right: 8px;
+  transition: all 0.3s ease;
+}
+.navbar-nav .nav-link:hover {
+  color: #198754 !important;
+  background-color: white;
+  border-color: #198754;
+}
+.navbar-nav .nav-link.disabled:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  background-color: transparent;
+  color: #ffffff !important;
+  border-color: transparent;
+}
+.hero-section {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222;
+  overflow: hidden;
+}
+.hero-section .carousel-inner img {
+  filter: brightness(0.6);
+  height: 60vh;
+  object-fit: cover;
+}
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1;
+}
+.hero-content {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  text-align: center;
+  z-index: 2;
+  width: 100%;
+  max-width: 600px;
+  animation: fadeInUp 1s;
+}
+.hero-content h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  color: #ffc107;
+  text-shadow: 2px 2px 8px #222;
+}
+.hero-content span {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 1rem;
+  display: block;
+  text-shadow: 1px 1px 6px #222;
+}
+.hero-content p {
+  margin-bottom: 1.5rem;
+  color: #f8f9fa;
+  text-shadow: 1px 1px 6px #222;
+}
+.hero-content .btn {
+  font-size: 1.1rem;
+  padding: 0.7rem 2.2rem;
+  border-radius: 30px;
+  background: linear-gradient(90deg, #198754 60%, #ffc107 100%);
+  color: #fff;
+  border: none;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(25,135,84,0.15);
+  transition: background 0.3s, transform 0.2s;
+}
+.hero-content .btn i {
+  margin-right: 8px;
+}
+.hero-content .btn:hover {
+  background: linear-gradient(90deg, #ffc107 60%, #198754 100%);
+  color: #222;
+  transform: translateY(-2px) scale(1.04);
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translate(-50%, 20%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+.about {
+  background: linear-gradient(120deg, #fff 60%, #e9f7ef 100%);
+  padding: 60px 0 40px 0;
+  border-radius: 0 0 40px 40px;
+  box-shadow: 0 8px 32px rgba(25,135,84,0.07);
+  margin-bottom: 40px;
+}
+.about .heading {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #198754;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+}
+.about .heading span {
+  color: #ffc107;
+}
+.about .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+.about .video-container {
+  flex: 1 1 260px;
+  max-width: 320px;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(25,135,84,0.09);
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.2s;
+}
+.about .video-container img {
+  width: 100%;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  transition: transform 0.3s;
+}
+.about .video-container:hover {
+  transform: translateY(-6px) scale(1.03);
+}
+.about .video-container img:hover {
+  transform: scale(1.07);
+}
+.about .video-container h3 {
+  color: #198754;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+.about .content {
+  flex: 2 1 340px;
+  padding: 1rem 2rem;
+}
+.about .content h3 {
+  color: #222;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.about .content p {
+  color: #444;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+.about .content .btn {
+  margin-top: 1.2rem;
+  background: #198754;
+  color: #fff;
+  border-radius: 30px;
+  padding: 0.5rem 1.7rem;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+.about .content .btn:hover {
+  background: #ffc107;
+  color: #222;
+}
+footer {
+  background: #222;
+  color: #fff;
+  padding: 30px 0 15px 0;
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 40px;
+  letter-spacing: 1px;
+}
+footer .social-icons a {
+  color: #ffc107;
+  margin: 0 10px;
+  font-size: 1.3rem;
+  transition: color 0.2s;
+}
+footer .social-icons a:hover {
+  color: #198754;
+}
+@media (max-width: 768px) {
+  .hero-content h3 { font-size: 2rem; }
+  .about .row { flex-direction: column; gap: 1.5rem; }
+  .about .content { padding: 1rem 0.5rem; }
+}
+@media (max-width: 576px) {
+  .hero-section, .hero-section .carousel-inner img { height: 38vh; min-height: 220px; }
+  .hero-content h3 { font-size: 1.3rem; }
+  .about { padding: 30px 0 20px 0; }
+}
+/* Responsive testimonial card */
+.testimonial-card {
+  min-height: 220px;
+  box-shadow: 0 6px 32px rgba(25,135,84,0.10);
+  border-left: 6px solid #ffc107;
+  background: linear-gradient(120deg, #fff 80%, #e9f7ef 100%);
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+.testimonial-card:hover {
+  transform: scale(1.025);
+  box-shadow: 0 12px 36px rgba(25,135,84,0.18);
+}
+.testimonial-avatar-initial {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #ffc107;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(25,135,84,0.10);
+  border: 3px solid #fff;
+  text-shadow: 1px 1px 6px #b8860b;
+  letter-spacing: 1px;
+}
+.testimonial-avatar-initial.bg-success {
+  background: #198754 !important;
+}
+.testimonial-blockquote {
+  font-size: 1.15rem;
+  font-style: italic;
+  color: #444;
+  border-left: 4px solid #ffc107;
+  background: linear-gradient(90deg, #fff 80%, #fffbe6 100%);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+@media (max-width: 768px) {
+  .testimonial-card { padding: 1.2rem; }
+  .testimonial-avatar-initial { width: 48px; height: 48px; font-size: 1.3rem; }
+}
+@media (max-width: 576px) {
+  .testimonial-card { padding: 0.7rem; }
+  .testimonial-quote-icon { font-size: 1.5rem !important; left: 12px !important; top: 12px !important; }
+} 

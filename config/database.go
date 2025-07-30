@@ -1,34 +1,52 @@
 package config
 
 import (
-    "context"
-    "log"
-    "time"
+	"context"
+	"log"
+	"time"
 
-    "go.mongodb.org/mongo-driver/mongo"
-    "go.mongodb.org/mongo-driver/mongo/options"
+	"os"
+
+	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var MongoClient *mongo.Client
 var MongoDatabase *mongo.Database
 
 func Connection() {
-    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-    defer cancel()
+	// Load .env file
+	errEnv := godotenv.Load()
+	if errEnv != nil {
+		log.Println("Warning: .env file not found, relying on environment variables")
+	}
 
-    clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
-    client, err := mongo.Connect(ctx, clientOptions)
-    if err != nil {
-        log.Fatal(err)
-    }
+	mongoURI := os.Getenv("MONGODB_URI")
+	if mongoURI == "" {
+		log.Fatal("MONGODB_URI not set in environment")
+	}
+	dbName := os.Getenv("MONGODB_DATABASE")
+	if dbName == "" {
+		log.Fatal("MONGODB_DATABASE not set in environment")
+	}
 
-    // Ping untuk memastikan koneksi berhasil
-    err = client.Ping(ctx, nil)
-    if err != nil {
-        log.Fatal(err)
-    }
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-    log.Println("Connected to MongoDB")
-    MongoClient = client
-    MongoDatabase = client.Database("sateayammadura")
+	clientOptions := options.Client().ApplyURI(mongoURI)
+	client, err := mongo.Connect(ctx, clientOptions)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Ping untuk memastikan koneksi berhasil
+	err = client.Ping(ctx, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Connected to MongoDB")
+	MongoClient = client
+	MongoDatabase = client.Database(dbName)
 }
